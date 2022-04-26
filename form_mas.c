@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #define N 1000
+
 
 void form_t(int n, float *t)
 {
@@ -44,18 +46,19 @@ void print_mas(int n,float *t, float *Uvx,float *Uvix)
 
 void write_to_file()
 {
-	//Формирование массивов для 50 точек и вывод в файл
+	//Формирование массивов для n точек и вывод в файл
 	float t[N],Uvx[N],Uvix[N];
-	form_t(50,t);
-	form_Uvx(50,t,Uvx);
-	form_Uvix(50,Uvix,Uvx);
+	int n;printf("Количество точек:");scanf("%d",&n);
+	form_t(n,t);
+	form_Uvx(n,t,Uvx);
+	form_Uvix(n,Uvix,Uvx);
 
 	FILE *f1,*f2,*f3;
 	f1=fopen("massiv_t.txt","w");
 	f2=fopen("massiv_Uvx.txt","w");
 	f3=fopen("massiv_Uvix.txt","w");
 	
-	for (int i=0;i<50;i++)
+	for (int i=0;i<n;i++)
 	{
 		fprintf(f1,"%7.5f\n",t[i]);
 		fprintf(f2,"%7.5f\n",Uvx[i]);
@@ -110,21 +113,46 @@ void zastavka()
 int main()
 {
 	float t[N],Uvx[N],Uvix[N];
-	int n;
-	scanf("%d",&n);
+	int n=10,choice;
+	system("clear");
+	while (1)
+	{
+		zastavka();
+		char str[]="-------------------------------------------------\n";
+		printf("%s|                      МЕНЮ                     |\n",str);
+		printf("|1 - Контрольный расчет t,Uvx,Uvix для n точек  |\n");
+		printf("|2 - Расчет параметра с заданной точностью      |\n");
+		printf("|3 - Запись данных t,Uvx,Uvix в файлы           |\n%s",str);
+				
+		printf("Количество точек:");
+		scanf("%d",&n);
 
-	form_t(n,t);
+		form_t(n,t);
+		form_Uvx(n,t,Uvx);
+		form_Uvix(n,Uvix,Uvx);
+		print_mas(n,t,Uvx,Uvix);
+		scanf("%d",&choice);
 
-	form_Uvx(n,t,Uvx);
-
-	form_Uvix(n,Uvix,Uvx);
-
-	print_mas(n,t,Uvx,Uvix);
+		switch (choice)
+		{
+		case 2:param(n,Uvx,t,1);break;
+		case 3:write_to_file();break;
+		}
+		int ch;
+		printf("Вернуться к началу цикла? [1(Да)/0(Нет)]");
+		while (1)
+		{
+			scanf("%d",&ch);
+			if (ch==1) {break;}
+			else if (ch==0) exit(0);
+			else printf("Попробуйте снова\n");
+		}
+	}
 
 	//printf("\nМаксимум Uvx достигается в точке %8.4f\n",param(n,Uvx,t));
 	write_to_file();
 	param (n,Uvx,t,1);
 	param_w_accuracy(n,t,Uvx);
-	zastavka();
+	
 	return 0;
 }
