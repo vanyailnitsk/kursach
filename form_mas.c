@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+//#include "func.h"
 #define N 1000
 
 
@@ -80,22 +81,25 @@ float param(int n,float *Uvx,float *t,int pr)
 	{
 		if (Uvx[i]==max) {vrem=t[i];break;}
 	}
-	if (pr){printf("\nМаксимум Uvx = %7.5f достигается в точке t = %7.5f\n\n",max,vrem);}
+	if (pr){printf("\nМаксимум Uvx = %7.5f  в точке t = %7.5f\n",max,vrem);}
 	return vrem;
 }
 
 
 void param_w_accuracy(int n,float *t,float *Uvx )
 {
-	float p=1,eps=0.01,par=100;
-	while (p>eps)
-	{
-		float par1=param(n,Uvx,t,0);
-		p=fabs(par-par1)/par1;
-		printf("n = %d\nparametr = %f\npogreshnost = %f\n",n,par1,p);
-		par=par1;
-		n=2*n;
-	}
+	float ourParamValue,bigParamValue,pogreshnost;
+	ourParamValue=param(n,Uvx,t,1);
+
+	float t1[N],Uvx1[N],Uvix1[N];
+	int n1=500;
+	form_t(n1,t1);
+	form_Uvx(n1,t1,Uvx1);
+	form_Uvix(n1,Uvix1,Uvx1);
+	bigParamValue=param(n1,Uvx1,t1,0);
+
+	pogreshnost=fabs(bigParamValue-ourParamValue)/ourParamValue;
+	printf("\rПогрешность:%.5f\n",pogreshnost);
 }
 
 void zastavka()
@@ -120,7 +124,7 @@ int main()
 		zastavka();
 		char str[]="-------------------------------------------------\n";
 		printf("%s|                      МЕНЮ                     |\n",str);
-		printf("|1 - Расчет параметра    |\n");
+		printf("|1 - Расчет параметра                           |\n");
 		printf("|2 - Расчёт параметра с заданной точностью      |\n");
 		printf("|3 - Запись данных t,Uvx,Uvix в файлы           |\n%s",str);
 				
@@ -136,12 +140,12 @@ int main()
 
 		switch (choice)
 		{
-		case 1:param(n,Uvx,t,1);break;
-		case 2:param_w_accuracy(n,t,Uvx);break;
-		case 3:write_to_file();break;
+		case 1:printf("\n             РАСЧЕТ ПАРАМЕТРА        ");param(n,Uvx,t,1);break;
+		case 2:printf("\n     РАСЧЁТ ПАРАМЕТРА С ЗАДАННОЙ ТОЧНОСТЬЮ ");param_w_accuracy(n,t,Uvx);break;
+		case 3:write_to_file();printf("Данные успешно записаны в файл!\n");break;
 		}
 		int ch;
-		printf("Вернуться к началу цикла? [1(Да)/0(Нет)]");
+		printf("\nПродолжить работу программы? [1(Да)/0(Нет)]");
 		while (1)
 		{
 			scanf("%d",&ch);
