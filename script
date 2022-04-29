@@ -1,0 +1,31 @@
+#!/bin/bash
+gcc -o form_mas form_mas.c -lm
+
+while true
+do
+	printf "             MENU\n"
+	printf "1)Расчет в среде Wxmaxima\n"
+	printf "2)Расчет параметра на языке Си\n"
+	printf "3)Построение графиков Wxmaxima\n"
+	printf "[Type \"exit\" to quit]\n Выбор:"
+
+	read choice
+	case $choice in
+
+		1)
+		wxmaxima raschet.wxmx
+		;;
+		2)
+		./form_mas	
+		;;
+		3)
+		#gnome-terminal --tab --command "bash -c './form_mas;bash'" 
+		wxmaxima graph.wxmx
+		;;
+		exit)
+		exit
+		;;
+
+	esac
+	clear
+done

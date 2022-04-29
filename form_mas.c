@@ -87,7 +87,7 @@ float param(int n,float *Uvx,float *t,int pr)
 
 void param_w_accuracy(int n,float *t,float *Uvx )
 {
-	float p=1,eps=0.5,par=9999999;
+	float p=1,eps=0.01,par=100;
 	while (p>eps)
 	{
 		float par1=param(n,Uvx,t,0);
@@ -120,8 +120,8 @@ int main()
 		zastavka();
 		char str[]="-------------------------------------------------\n";
 		printf("%s|                      МЕНЮ                     |\n",str);
-		printf("|1 - Контрольный расчет t,Uvx,Uvix для n точек  |\n");
-		printf("|2 - Расчет параметра с заданной точностью      |\n");
+		printf("|1 - Расчет параметра    |\n");
+		printf("|2 - Расчёт параметра с заданной точностью      |\n");
 		printf("|3 - Запись данных t,Uvx,Uvix в файлы           |\n%s",str);
 				
 		printf("Количество точек:");
@@ -131,11 +131,13 @@ int main()
 		form_Uvx(n,t,Uvx);
 		form_Uvix(n,Uvix,Uvx);
 		print_mas(n,t,Uvx,Uvix);
-		scanf("%d",&choice);
+		
+		printf("\n Выбор:");scanf("%d",&choice);
 
 		switch (choice)
 		{
-		case 2:param(n,Uvx,t,1);break;
+		case 1:param(n,Uvx,t,1);break;
+		case 2:param_w_accuracy(n,t,Uvx);break;
 		case 3:write_to_file();break;
 		}
 		int ch;
@@ -143,8 +145,8 @@ int main()
 		while (1)
 		{
 			scanf("%d",&ch);
-			if (ch==1) {break;}
-			else if (ch==0) exit(0);
+			if (ch==1) {system("clear");break;}
+			else if (ch==0) {printf("Работа программы завершена\n");exit(0);}
 			else printf("Попробуйте снова\n");
 		}
 	}
