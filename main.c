@@ -29,7 +29,7 @@ int main()
 		{
 		case 1:printf("\n             РАСЧЕТ ПАРАМЕТРА №4        ");param(n,Uvx,t,1);break;
 		case 2:printf("\n   НАХОЖДЕНИЕ МОМЕНТА ВРЕМЕНИ ПРИ КОТОРОМ UVX ДОСТИГАЕТ МАКСИМУМА ");param_w_accuracy(n,t,Uvx);break;
-		case 3:write_to_file();printf("Данные успешно записаны в файл!\n");break;
+		case 3:write_to_file(n);printf("Данные успешно записаны в файл!\n");break;
 		default:printf("Нет такой опции\n");
 		}
 		int ch;
