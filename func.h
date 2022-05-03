@@ -5,7 +5,7 @@
 #include <unistd.h>
 #define N 1000
 
-
+//Формирование массива t
 void form_t(int n, float *t)
 {
 	float tn=0,tk=2;
@@ -16,6 +16,7 @@ void form_t(int n, float *t)
 	}
 }
 
+//Формирование массива Uvx
 void form_Uvx(int n,float *t,float *Uvx)
 {
 	float a1=1.5,a2=3,U=25;
@@ -25,6 +26,7 @@ void form_Uvx(int n,float *t,float *Uvx)
 	}
 }
 
+//Формирование массива Uvix
 void form_Uvix(int n,float *Uvix,float *Uvx)
 {
 	float Uvx1=10;
@@ -36,20 +38,23 @@ void form_Uvix(int n,float *Uvix,float *Uvx)
 	}
 }
 
+
+//Вывод таблицы t,Uvx,Uvix
 void print_mas(int n,float *t, float *Uvx,float *Uvix)
 {
-	printf("  №      t       Uvx     Uvix  \n\n");
+	printf("\n  №      t       Uvx     Uvix  \n\n");
 	for (int i=0;i<n;i++)
 	{
 		printf("%3d %8.5f %8.5f %8.5f\n",i+1,t[i],Uvx[i],Uvix[i]);
 	}
 }
 
-void write_to_file()
+//Запись данных в файлы
+void write_to_file(int n)
 {
 	//Формирование массивов для n точек и вывод в файл
 	float t[N],Uvx[N],Uvix[N];
-	int n;printf("Количество точек:");scanf("%d",&n);
+	//int n;printf("Количество точек:");scanf("%d",&n);
 	form_t(n,t);
 	form_Uvx(n,t,Uvx);
 	form_Uvix(n,Uvix,Uvx);
@@ -68,6 +73,7 @@ void write_to_file()
 	fclose(f1);fclose(f2);fclose(f3);
 }
 
+//Расчет параметра 4
 float param(int n,float *Uvx,float *t,int pr)
 {
 	float max=0;
@@ -85,7 +91,7 @@ float param(int n,float *Uvx,float *t,int pr)
 	return vrem;
 }
 
-
+//Расчет параметра с заданной точностью
 void param_w_accuracy(int n,float *t,float *Uvx )
 {
 	float ourParamValue,bigParamValue,pogreshnost;
@@ -101,7 +107,7 @@ void param_w_accuracy(int n,float *t,float *Uvx )
 	pogreshnost=fabs(bigParamValue-ourParamValue)/ourParamValue;
 	printf("\rПогрешность:%.5f\n",pogreshnost);
 }
-
+//Чтение и вывод на экран заставки
 void zastavka()
 {
 	FILE *zast = fopen("zastavka.txt","r");
@@ -112,4 +118,16 @@ void zastavka()
 		printf("%c",ch);
 	}
 	fclose(zast);
+}
+
+//Вывод меню на экран
+void print_menu()
+{
+	char str[]="-------------------------------------------------\n";
+		printf("%s|                      МЕНЮ                     |\n",str);
+		printf("|1 - Расчет параметра                           |\n");
+		printf("|2 - Расчёт параметра с заданной точностью      |\n");
+		printf("|3 - Запись данных t,Uvx,Uvix в файлы           |\n%s",str);
+				
+		printf("Количество точек:");
 }
